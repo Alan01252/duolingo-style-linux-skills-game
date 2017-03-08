@@ -1,0 +1,50 @@
+import request from 'superagent'
+import * as types from '../constants/ActionTypes'
+
+const dataService = store => next => action => {
+
+    next(action);
+    switch (action.type) {
+        case types.GET_QUESTION_DATA:
+            request
+                .get('http://localhost:8000/question')
+                .end((err, res) => {
+
+                    console.log(err);
+                    console.log(res);
+
+                    if (err) {
+                        return next({
+                            type: 'GET_QUESTION_ERROR',
+                            err
+                        })
+                    }
+                    const data = JSON.parse(res.text);
+                    next({
+                        type: 'GET_QUESTION_DATA_RECEIVED',
+                        data
+                    })
+                });
+            break;
+        case 'POST_ANSWER_QUESTION':
+
+            console.log(action);
+            request
+                .post('http://localhost:8000/question')
+                .send(action.question)
+                .end((err, res) => {
+
+                    const data = JSON.parse(res.text);
+                    next({
+                        type: "POST_QUESTION_DATA_RECEIVED",
+                        data
+                    })
+                });
+            break;
+        default:
+            break
+    }
+
+};
+
+export default dataService
