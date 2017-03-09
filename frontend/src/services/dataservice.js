@@ -7,7 +7,7 @@ const dataService = store => next => action => {
     switch (action.type) {
         case types.GET_QUESTION_DATA:
             request
-                .get('http://localhost:8000/question')
+                .get('https://pf0zn3uwi5.execute-api.eu-west-2.amazonaws.com/dev/question')
                 .end((err, res) => {
 
                     console.log(err);
@@ -30,7 +30,7 @@ const dataService = store => next => action => {
 
             console.log(action);
             request
-                .post('http://localhost:8000/question')
+                .post('https://pf0zn3uwi5.execute-api.eu-west-2.amazonaws.com/dev/question')
                 .send(action.question)
                 .end((err, res) => {
 
