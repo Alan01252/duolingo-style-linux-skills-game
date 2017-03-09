@@ -207,7 +207,7 @@
     ]
   },
   {
-    "question": "Select a regex that matches exact two rows below",
+    "question": "Select a regex that matches exactly two of the rows below",
     "rows": [
       {
         "text": "linux 123",
