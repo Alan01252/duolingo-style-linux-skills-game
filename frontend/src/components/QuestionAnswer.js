@@ -31,15 +31,10 @@ export default class QuestionAnswer extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
 
-
-        console.log("state" + nextState);
-        console.log("next question" + nextProps.question.question);
-        console.log("question text" + questionText);
         if (nextProps.question.question !== questionText) {
             answers = [];
         }
 
-        console.log("here??");
         return true;
     }
 
