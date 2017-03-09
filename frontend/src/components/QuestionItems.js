@@ -4,6 +4,7 @@ import React, {Component, PropTypes} from 'react'
 import QuestionAnswer from './QuestionAnswer'
 import QuestionItem from'./QuestionItem'
 import AnswerPicked from './AnswerPicked'
+import NextQuestion from './NextQuestion'
 
 
 export default class QuestionItems extends Component {
@@ -40,6 +41,11 @@ export default class QuestionItems extends Component {
                     incorrect_answers={question.incorrect_answers}
                     send_answer={actions.sendAnswer}
                 />
+                <NextQuestion
+                    question={question}
+                    get_question={actions.getQuestion}
+                />
+
 
             </div>
         )

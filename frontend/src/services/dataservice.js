@@ -3,7 +3,6 @@ import * as types from '../constants/ActionTypes'
 
 const dataService = store => next => action => {
 
-    next(action);
     switch (action.type) {
         case types.GET_QUESTION_DATA:
             request
@@ -34,6 +33,7 @@ const dataService = store => next => action => {
                 .send(action.question)
                 .end((err, res) => {
 
+                    console.log("Here twice?");
                     const data = JSON.parse(res.text);
                     next({
                         type: "POST_QUESTION_DATA_RECEIVED",

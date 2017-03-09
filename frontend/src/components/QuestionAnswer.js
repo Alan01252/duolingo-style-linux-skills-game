@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 
 let answers = [];
+let questionText;
+
 const shuffle = (array) => {
     var newarr = []
     var currentIndex = array.length,
@@ -27,6 +29,21 @@ export default class QuestionAnswer extends Component {
         send_answer: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(nextProps, nextState) {
+
+
+        console.log("state" + nextState);
+        console.log("next question" + nextProps.question.question);
+        console.log("question text" + questionText);
+        if (nextProps.question.question !== questionText) {
+            answers = [];
+        }
+
+        console.log("here??");
+        return true;
+    }
+
+
     render() {
 
         const {question, correct_answers, incorrect_answers, send_answer} = this.props
@@ -38,12 +55,14 @@ export default class QuestionAnswer extends Component {
             "cursor": "pointer"
         };
 
+        questionText = question.question;
+
         if (answers.length === 0) {
             answers = shuffle(correct_answers.concat(incorrect_answers))
         }
 
         return (
-            <div className="card-block">
+            <div className="card-block" key={question.text}>
                 <div className="btn-block">
                     {answers.map(function (answer, i) {
                         return <button type="button" key={answer}
