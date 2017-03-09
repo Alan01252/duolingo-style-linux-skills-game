@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('linux-skills:questiontester');
 
 class QuestionTester {
@@ -14,9 +16,12 @@ class QuestionTester {
         return true
     }
 
-    testExactMatch(result, row, index = 0) {
+    testExactMatch(result, row, index) {
 
         let passed = true;
+        if (!index) {
+            index = 0;
+        }
         if (!result && !row.match) {
             return passed;
         }

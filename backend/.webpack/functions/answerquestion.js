@@ -46,10 +46,9 @@
 
 	'use strict';
 
-	const QuestionGetter = __webpack_require__(1);
-	const QuestionTester = __webpack_require__(3);
+	const QuestionTester = __webpack_require__(1);
 
-	module.exports.question = (event, context, callback) => {
+	module.exports.answerquestion = (event, context, callback) => {
 
 	    let response = {
 	        statusCode: 200
@@ -57,291 +56,25 @@
 
 	    console.log(context);
 	    console.log(event);
-
-	    if (event.method === "GET") {
-	        response.body = JSON.stringify(new QuestionGetter().get());
-	    }
-
-	    if (event.method === "POST") {
-	        let question = event.body;
-	        question.correct = new QuestionTester().test(question);
-	        console.log(new QuestionTester().test(question));
-	        console.log(question.correct);
-	        question.rows.map((row, index) => {
-	            question.rows[index].found_matches = row.text.match(question.answer);
-	        });
-	        response.body = JSON.stringify(question)
-	    }
+	    let question = event.body;
+	    question.correct = new QuestionTester().test(question);
+	    console.log(new QuestionTester().test(question));
+	    console.log(question.correct);
+	    question.rows.map((row, index) => {
+	        question.rows[index].found_matches = row.text.match(question.answer);
+	    });
+	    response.body = JSON.stringify(question)
 
 	    callback(null, response);
 	};
-
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const questions = __webpack_require__(2);
+	'use strict';
 
-	class QuestionGetter {
-
-	    get() {
-	        return questions[Math.floor(Math.random() * questions.length)];
-	    }
-	}
-
-	module.exports = QuestionGetter;
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = [
-		{
-			"question": "Select a regex that exactly matches the string linuxskills",
-			"rows": [
-				{
-					"text": "linuxskills",
-					"match": "linuxskills"
-				}
-			],
-			"answer_type": "regex_exact",
-			"correct_answers": [
-				"linuxskills",
-				"^linuxskills",
-				"^linuxskills$",
-				"...........",
-				"\\D*",
-				".*",
-				"\\w*",
-				".+",
-				"linux.+"
-			],
-			"incorrect_answers": [
-				"[linuxskills]",
-				"^linux",
-				".......",
-				"linux-skills",
-				"(linux)(skills)"
-			]
-		},
-		{
-			"question": "Select a regex that matches all rows that start with the letter 'a'",
-			"rows": [
-				{
-					"text": "abcdefg",
-					"match": "a"
-				},
-				{
-					"text": "abcde",
-					"match": "a"
-				},
-				{
-					"text": "abc",
-					"match": "a"
-				},
-				{
-					"text": "b",
-					"match": "b"
-				}
-			],
-			"answer_type": "regex_exact",
-			"exact_matches": 3,
-			"correct_answers": [
-				"^a"
-			],
-			"incorrect_answers": [
-				"!a",
-				"abc",
-				"b",
-				".+",
-				"\\w"
-			]
-		},
-		{
-			"question": "Select a regex that matches the first row only",
-			"rows": [
-				{
-					"text": "Linux Skills",
-					"match": "Linux Skills"
-				},
-				{
-					"text": "Linux Skills are great",
-					"match": "Linux Skills are great"
-				},
-				{
-					"text": "You have loads of Linux Skills",
-					"match": "You have loads of Linux Skills"
-				}
-			],
-			"answer_type": "regex_any_match",
-			"match_row": 0,
-			"correct_answers": [
-				"^Linux Skills$"
-			],
-			"incorrect_answers": [
-				"^Linux Skills",
-				"[Linux Skills]",
-				"(Skills)"
-			]
-		},
-		{
-			"question": "Select a regex that finds any match in exactly two of the rows below",
-			"rows": [
-				{
-					"text": "Linux Skills",
-					"match": "Linux Skills"
-				},
-				{
-					"text": "Your Linux Skills are great",
-					"match": "Linux Skills"
-				},
-				{
-					"text": "Sweet Windows Skills",
-					"match": "Sweet Windows Skills"
-				}
-			],
-			"answer_type": "regex_any_match",
-			"exact_matches": 2,
-			"correct_answers": [
-				"(Linux Skills)",
-				"(Linux)",
-				"Linux Skills"
-			],
-			"incorrect_answers": [
-				"^Linux Skills",
-				"[Linux Skills]",
-				"(Skills)"
-			]
-		},
-		{
-			"question": "Select a regex that matches the two rows below",
-			"rows": [
-				{
-					"text": "Linuxskills",
-					"match": "Linuxskills"
-				},
-				{
-					"text": "linuxskills",
-					"match": "linuxskills"
-				}
-			],
-			"answer_type": "regex_exact",
-			"correct_answers": [
-				"[Ll]inuxskills"
-			],
-			"incorrect_answers": [
-				"^L",
-				"^l",
-				"linuxskills",
-				"Linuxskills"
-			]
-		},
-		{
-			"question": "Select a regex that finds any match within all three of the rows below",
-			"rows": [
-				{
-					"text": "abcdefg",
-					"match": "a"
-				},
-				{
-					"text": "abcde",
-					"match": "a"
-				},
-				{
-					"text": "abc",
-					"match": "a"
-				}
-			],
-			"answer_type": "regex_any_match",
-			"exact_matches": 3,
-			"correct_answers": [
-				"^a",
-				"abc",
-				".*",
-				"[a-z]*",
-				"[a-z]+",
-				"(.*)",
-				"[abcdef]"
-			],
-			"incorrect_answers": [
-				"!a",
-				"abcdefg"
-			]
-		},
-		{
-			"question": "Select a regex that matches all pdf file names starting with linux_skills without the .pdf extension from the rows below",
-			"rows": [
-				{
-					"text": "linux_skills_1234.pdf",
-					"match_group": "linux_skills_1234"
-				},
-				{
-					"text": "linux_skills_20160101.pdf",
-					"match_group": "linux_skills_20160101.pdf"
-				},
-				{
-					"text": "some_other_linux_skills.pdf"
-				},
-				{
-					"text": "linux_skills_photo.png"
-				}
-			],
-			"answer_type": "regex_exact_match_group",
-			"exact_matches": 2,
-			"correct_answers": [
-				"^(linux_skills.+)\\.pdf*"
-			],
-			"incorrect_answers": [
-				"linux_skills_1234.pdf",
-				"^linux_skills",
-				"\\.pdf",
-				"^(linux_skills.+)('\\.pdf')"
-			]
-		},
-		{
-			"question": "Select a regex that matches exact two rows below",
-			"rows": [
-				{
-					"text": "linux 123",
-					"match": true
-				},
-				{
-					"text": "123 linux",
-					"match": "123 linux"
-				},
-				{
-					"text": "123linux skills",
-					"match": true
-				},
-				{
-					"text": "456 linux",
-					"match": "456 linux"
-				}
-			],
-			"answer_type": "regex_exact",
-			"exact_matches": 2,
-			"correct_answers": [
-				"\\d+ \\w+",
-				"\\d* \\w*",
-				".+ .+"
-			],
-			"incorrect_answers": [
-				"^123",
-				"(linux)",
-				"\\w+ \\d+",
-				"\\d \\w+",
-				"\\d \\w"
-			]
-		}
-	];
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	const debug = __webpack_require__(4)('linux-skills:questiontester');
+	const debug = __webpack_require__(2)('linux-skills:questiontester');
 
 	class QuestionTester {
 
@@ -357,9 +90,12 @@
 	        return true
 	    }
 
-	    testExactMatch(result, row, index = 0) {
+	    testExactMatch(result, row, index) {
 
 	        let passed = true;
+	        if (!index) {
+	            index = 0;
+	        }
 	        if (!result && !row.match) {
 	            return passed;
 	        }
@@ -462,7 +198,7 @@
 
 
 /***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -471,14 +207,14 @@
 	 */
 
 	if (typeof process !== 'undefined' && process.type === 'renderer') {
-	  module.exports = __webpack_require__(5);
+	  module.exports = __webpack_require__(3);
 	} else {
-	  module.exports = __webpack_require__(8);
+	  module.exports = __webpack_require__(6);
 	}
 
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -487,7 +223,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(6);
+	exports = module.exports = __webpack_require__(4);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -666,7 +402,7 @@
 
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -682,7 +418,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(7);
+	exports.humanize = __webpack_require__(5);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -874,7 +610,7 @@
 
 
 /***/ },
-/* 7 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/**
@@ -1029,15 +765,15 @@
 
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var tty = __webpack_require__(9);
-	var util = __webpack_require__(10);
+	var tty = __webpack_require__(7);
+	var util = __webpack_require__(8);
 
 	/**
 	 * This is the Node.js implementation of `debug()`.
@@ -1045,7 +781,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(6);
+	exports = module.exports = __webpack_require__(4);
 	exports.init = init;
 	exports.log = log;
 	exports.formatArgs = formatArgs;
@@ -1215,14 +951,14 @@
 	      break;
 
 	    case 'FILE':
-	      var fs = __webpack_require__(11);
+	      var fs = __webpack_require__(9);
 	      stream = new fs.SyncWriteStream(fd, { autoClose: false });
 	      stream._type = 'fs';
 	      break;
 
 	    case 'PIPE':
 	    case 'TCP':
-	      var net = __webpack_require__(12);
+	      var net = __webpack_require__(10);
 	      stream = new net.Socket({
 	        fd: fd,
 	        readable: false,
@@ -1276,25 +1012,25 @@
 
 
 /***/ },
-/* 9 */
+/* 7 */
 /***/ function(module, exports) {
 
 	module.exports = require("tty");
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("util");
 
 /***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = require("net");

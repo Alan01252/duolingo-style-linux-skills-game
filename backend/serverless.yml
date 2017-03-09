@@ -7,13 +7,16 @@ provider:
 
 
 functions:
-  hello:
-    handler: handler.question
+  getquestion:
+    handler: functions/getquestion.getquestion
     events:
       - http:
           path: question
           method: get
           cors: true
+  answerquestion:
+    handler: functions/answerquestion.answerquestion
+    events:
       - http:
           path: question
           method: post

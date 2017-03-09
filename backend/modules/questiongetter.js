@@ -1,3 +1,5 @@
+'use strict';
+
 const questions = require('../data/questions.json');
 
 class QuestionGetter {
