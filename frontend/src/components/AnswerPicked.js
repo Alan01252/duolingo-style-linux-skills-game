@@ -15,7 +15,6 @@ export default class AnswerPicked extends Component {
         const correct = question.correct;
         console.log("correct" + correct)
         if (correct === true) {
-            console.log("here?");
             return <CorrectAnswerPicked />;
         }
 
