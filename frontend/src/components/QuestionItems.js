@@ -16,7 +16,7 @@ export default class QuestionItems extends Component {
         const {question, actions} = this.props;
 
         const cardStyle = {
-            width: '40em',
+            maxWidth: '40em',
         };
 
         return (
