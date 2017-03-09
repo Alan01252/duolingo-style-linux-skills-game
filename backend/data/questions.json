@@ -43,12 +43,16 @@
         "match": "a"
       },
       {
+        "text": "ab",
+        "match": "a"
+      },
+      {
         "text": "b",
         "match": "b"
       }
     ],
     "answer_type": "regex_exact",
-    "exact_matches": 3,
+    "exact_matches": 4,
     "correct_answers": [
       "^a"
     ],
@@ -129,6 +133,7 @@
       }
     ],
     "answer_type": "regex_exact",
+    "exact_matches": 2,
     "correct_answers": [
       "[Ll]inuxskills"
     ],
