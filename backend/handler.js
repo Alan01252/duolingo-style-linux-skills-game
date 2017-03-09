@@ -19,6 +19,11 @@ module.exports.question = (event, context, callback) => {
     if (event.method === "POST") {
         let question = event.body;
         question.correct = new QuestionTester().test(question);
+        console.log(new QuestionTester().test(question));
+        console.log(question.correct);
+        question.rows.map((row, index) => {
+            question.rows[index].found_matches = row.text.match(question.answer);
+        });
         response.body = JSON.stringify(question)
     }
 

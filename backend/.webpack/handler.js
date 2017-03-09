@@ -65,7 +65,11 @@
 	    if (event.method === "POST") {
 	        let question = event.body;
 	        question.correct = new QuestionTester().test(question);
-
+	        console.log(new QuestionTester().test(question));
+	        console.log(question.correct);
+	        question.rows.map((row, index) => {
+	            question.rows[index].found_matches = row.text.match(question.answer);
+	        });
 	        response.body = JSON.stringify(question)
 	    }
 
@@ -123,7 +127,7 @@
 			]
 		},
 		{
-			"question": "Select a regex that tests whether all rows start with 'a'",
+			"question": "Select a regex that matches all rows that start with the letter 'a'",
 			"rows": [
 				{
 					"text": "abcdefg",
@@ -149,7 +153,6 @@
 			],
 			"incorrect_answers": [
 				"!a",
-				"*",
 				"abc",
 				"b",
 				".+",
@@ -184,7 +187,7 @@
 			]
 		},
 		{
-			"question": "Select a regex that matches two of the rows below",
+			"question": "Select a regex that finds any match in exactly two of the rows below",
 			"rows": [
 				{
 					"text": "Linux Skills",
@@ -264,12 +267,11 @@
 			],
 			"incorrect_answers": [
 				"!a",
-				"*",
 				"abcdefg"
 			]
 		},
 		{
-			"question": "Select a regex that captures all pdf file names starting with linux_skills without the .pdf extension from the rows below",
+			"question": "Select a regex that matches all pdf file names starting with linux_skills without the .pdf extension from the rows below",
 			"rows": [
 				{
 					"text": "linux_skills_1234.pdf",
@@ -299,7 +301,7 @@
 			]
 		},
 		{
-			"question": "Select a regex that captures only two rows below",
+			"question": "Select a regex that matches exact two rows below",
 			"rows": [
 				{
 					"text": "linux 123",

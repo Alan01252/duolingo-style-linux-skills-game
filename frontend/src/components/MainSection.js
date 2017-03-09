@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import QuestionItem from './QuestionItem'
+import QuestionItems from './QuestionItems'
 
 
 export default class MainSection extends Component {
@@ -20,7 +20,7 @@ export default class MainSection extends Component {
         return (
             <div className="container" style={containerStyle}>
                 <section className="main">
-                    <QuestionItem question={question} actions={actions}/>
+                    <QuestionItems question={question} actions={actions}/>
                 </section>
             </div>
         )

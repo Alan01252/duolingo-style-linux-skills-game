@@ -1,43 +1,35 @@
 import React, {Component, PropTypes} from 'react'
 
 
-import QuestionAnswer from './QuestionAnswer'
-import AnswerPicked from './AnswerPicked'
-
-
 export default class QuestionItem extends Component {
     static propTypes = {
-        question: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired
+        item: PropTypes.object.isRequired,
+        question: PropTypes.object.isRequired
     };
 
     render() {
-        const {question, actions} = this.props;
+        const {item, question} = this.props;
 
-        const cardStyle = {
-            width: '40em',
-        };
+
+        let text = item.text;
+        if (item.found_matches) {
+            let index = 0;
+            if (question.answer_type === "regex_exact_match_group") {
+                if (item.found_matches[1]) {
+                    index = 1;
+                }
+            }
+            text = item.text.replace(item.found_matches[index], "<span class='lead' style='color:green'>" + item.found_matches[index] + "</span>");
+        }
+
+
+        function createMarkup(text) {
+            return {__html: text};
+        }
+
 
         return (
-            <div className="card" style={cardStyle}>
-                <div className="card-block">
-                    <h4 className="card-title"> {question.question}</h4>
-                </div>
-                <ul className="list-group list-group-flush">
-                    {question.rows.map(function (row, i) {
-                        return <li className="list-group-item" key={row.text}>{row.text}</li>;
-                    })}
-                </ul>
-                <QuestionAnswer
-                    question={question}
-                    correct_answers={question.correct_answers}
-                    incorrect_answers={question.incorrect_answers}
-                    send_answer={actions.sendAnswer}
-                />
-                <AnswerPicked
-                    question={question}
-                />
-            </div>
+            <span dangerouslySetInnerHTML={createMarkup(text)}></span>
         )
     }
 }
