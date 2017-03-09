@@ -19,7 +19,13 @@ export default class QuestionItem extends Component {
                     index = 1;
                 }
             }
-            text = item.text.replace(item.found_matches[index], "<span class='lead' style='color:green'>" + item.found_matches[index] + "</span>");
+            if (question.answer_type === "regex_exact") {
+                if (item.match === item.found_matches[0]) {
+                    text = item.text.replace(item.found_matches[index], "<span class='lead' style='color:green'>" + item.found_matches[index] + "</span>");
+                }
+            } else {
+                text = item.text.replace(item.found_matches[index], "<span class='lead' style='color:green'>" + item.found_matches[index] + "</span>");
+            }
         }
 
 
